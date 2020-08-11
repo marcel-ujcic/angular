@@ -1,0 +1,5 @@
+<div class="slidecontainer">
+  <a>{{getMin()}}</a>
+  <input type="range" [min]="getMin()"[max]="getMax()" [value]="getMax()*0.5" class="slider" id="myRange" (click)="value()">
+  <a>{{getMax()}}</a>
+</div>

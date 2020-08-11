@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {CardComponent} from '../card/card.component';
 import {HeaderComponent} from '../header/header.component';
 import {DetailsComponent} from '../details/details.component';
+import {fakeAsync} from '@angular/core/testing';
+import {element} from 'protractor';
+import {SliderComponent} from '../slider/slider.component';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +14,8 @@ import {DetailsComponent} from '../details/details.component';
 export class HomeComponent implements OnInit {
   constructor() {
   }
+  static max = 0;
+  static min = 999999;
 
   products: any = [
     {
@@ -524,14 +529,67 @@ export class HomeComponent implements OnInit {
       createdAt: '2017-02-06T11:14:45.131Z',
       updatedAt: '2017-02-06T11:16:44.344Z'
     }];
+  // poklice funkcijo v Detail component, ki pokaže več podrobnosti izdelka
+  private v: any;
+  searchedProducts: any = [];
+  activdSearch = false;
+  newMax = SliderComponent.getNewMax();
+  MinMax() {
+    for (const item of this.products) {
+      for (const inner of item.listOfPlans) {
+        if (inner.price.amount > HomeComponent.max) {
+          HomeComponent.max = inner.price.amount;
+        }
+        if (inner.price.amount < HomeComponent.min) {
+          HomeComponent.min = inner.price.amount;
+        }
+      }
+    }
+  }
   ngOnInit() {}
   // poklice funkcijo v Card component, ki doda izbrani izdelek v košaro
   poklicicclicked(item: any) {
     CardComponent.clicked(item);
   }
-  // poklice funkcijo v Detail component, ki pokaže več podrobnosti izdelka
   sendtoDetails(item: any) {
     DetailsComponent.pridobiProdukt(item);
   }
+  searchFordString(value: string) {
+    // tslint:disable-next-line:
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].cardTitle.includes(value)) {
+          this.searchedProducts.push(this.products[i]);
+        }
+      }
+      this.activdSearch = true;
+    }
+  clearSearched() {
+    if (this.activdSearch) {
+      this.searchedProducts = [];
+    }
+  }
+  sortAplhaDesc() {
+    // tslint:disable-next-line:only-arrow-functions
+    this.products.sort((a, b) => a.cardTitle.localeCompare(b.cardTitle));
+    if (this.searchedProducts) {
+      this.searchedProducts.sort((a, b) => a.cardTitle.localeCompare(b.cardTitle));
+    }
+  }
+  sortAplhaAsc() {
+    // tslint:disable-next-line:only-arrow-functions
+    this.products.sort((a, b) => b.cardTitle.localeCompare(a.cardTitle));
+    if (this.searchedProducts) {
+      this.searchedProducts.sort((a, b) => b.cardTitle.localeCompare(a.cardTitle));
+    }
+  }
+  openNav() {
+    document.getElementById('mySidenav').style.width = '250px';
+  }
+
+  closeNav() {
+    document.getElementById('mySidenav').style.width = '0';
+  }
 
 }
+

@@ -11,6 +11,7 @@ import { BoxComponent } from './box/box.component';
 import { ButtonComponent } from './button/button.component';
 import { CardComponent } from './card/card.component';
 import { BtnCheckUoutComponent } from './btn-check-uout/btn-check-uout.component';
+import { SliderComponent } from './slider/slider.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { BtnCheckUoutComponent } from './btn-check-uout/btn-check-uout.component
     BoxComponent,
     ButtonComponent,
     CardComponent,
-    BtnCheckUoutComponent
+    BtnCheckUoutComponent,
+    SliderComponent
   ],
   imports: [
     BrowserModule,
